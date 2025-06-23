@@ -1,12 +1,14 @@
 import express from 'express';
-import { authMiddlewre } from "./middleware";
+import { authMiddleware } from "./middleware";
 import { prismaClient } from 'db/client';
+import cors from "cors";
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
-app.post ("/api/v1/website", authMiddlewre, async(req, res) => {
+app.post ("/api/v1/website", authMiddleware, async(req, res) => {
   const userId = req.userId!;
   const url = req.body.url;
 
@@ -22,7 +24,7 @@ app.post ("/api/v1/website", authMiddlewre, async(req, res) => {
   });
 })
 
-app.get ("/api/v1/website/status", authMiddlewre, async (req, res) => {
+app.get ("/api/v1/website/status", authMiddleware, async (req, res) => {
   const websiteId = req.query.websiteId! as unknown as string;
   const userId = req.userId;
 
@@ -40,13 +42,16 @@ app.get ("/api/v1/website/status", authMiddlewre, async (req, res) => {
   res.json(data)
 })
 
-app.get ("/api/v1/websites", authMiddlewre, async(req, res) => {
+app.get ("/api/v1/websites", authMiddleware, async(req, res) => {
   const userId = req.userId!;
 
   const websites = await prismaClient.website.findMany({
     where: {
       userId,
       disabled: false
+    },
+    include: {
+      ticks: true
     }
   })
 
@@ -55,7 +60,7 @@ app.get ("/api/v1/websites", authMiddlewre, async(req, res) => {
   })
 })
 
-app.delete ("/api/v1/website/", authMiddlewre, async(req, res) => {
+app.delete ("/api/v1/website/", authMiddleware, async(req, res) => {
   const websiteId = req.body.websiteId!;
   const userId = req.userId!;
 

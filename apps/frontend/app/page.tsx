@@ -18,8 +18,11 @@ import {
   ChevronRight
 } from 'lucide-react';
 import UptimeGraph from './components/UptimeGraph';
+import { useRouter } from 'next/navigation';
 
 function App() {
+  const router = useRouter();
+  
   return (
     <div className="min-h-screen bg-gray-900">
       {/* Navigation */}
@@ -65,7 +68,7 @@ function App() {
               from multiple global locations. Keep your business running smoothly.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl">
+              <button onClick={() => router.push('/dashboard')} className="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl">
                 Start Free 30-Day Trial
               </button>
               <button className="border border-gray-600 text-gray-300 px-8 py-4 rounded-lg font-semibold hover:bg-gray-800 transition-colors flex items-center justify-center">
